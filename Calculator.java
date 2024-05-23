@@ -33,6 +33,10 @@ public class Calculator {
                 a = Integer.parseInt(data[0]);
                 b = Integer.parseInt(data[1]);
             }
+            if(Math.abs(a)>10||Math.abs(b)>10){
+                System.out.println("Input is restrected to the number 10. "+"Text any digits 0 to 10");
+                return;
+            }
             int result;
             switch (actions[actionIndex]){
                 case "+":

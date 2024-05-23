@@ -8,19 +8,27 @@ public class Calculator {
         Scanner scn = new Scanner(System.in);
         System.out.print("Введите выражение: ");
         String exp = scn.nextLine();
-        int actionIndex=-1;
+        int actionIndex = -1;
+        int actionCount = 0;
         for (int i = 0; i < actions.length; i++) {
-            if(exp.contains(actions[i])){
+            int count = exp.length() - exp.replace(actions[i], "").length();
+            if (count == 1) {
                 actionIndex = i;
-                break;
+                actionCount++;
             }
         }
-        if(actionIndex==-1){
+
+        if (actionIndex == -1 || actionCount != 1) {
             System.out.println("Некорректное выражение");
             return;
         }
+
         String[] data = exp.split(regexActions[actionIndex]);
 
+        if (data.length != 2) {
+            System.out.println("Некорректное выражение");
+            return;
+        }
         if(converter.isRoman(data[0]) == converter.isRoman(data[1])){
             int a,b;
             boolean isRoman = converter.isRoman(data[0]);
@@ -34,7 +42,7 @@ public class Calculator {
                 b = Integer.parseInt(data[1]);
             }
             if(Math.abs(a)>10||Math.abs(b)>10){
-                System.out.println("Input is restrected to the number 10. "+"Text any digits 0 to 10");
+                System.out.println();
                 return;
             }
             int result;

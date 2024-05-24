@@ -1,15 +1,25 @@
-
 import java.util.Scanner;
-public class Calculator {
+
+public class Main {
     public static void main(String[] args) {
         Converter converter = new Converter();
         String[] actions = {"+", "-", "/", "*"};
         String[] regexActions = {"\\+", "-", "/", "\\*"};
         Scanner scn = new Scanner(System.in);
-        System.out.print("Введите выражение: ");
+        System.out.print("Введите выражение:");
         String exp = scn.nextLine();
+        try {
+            String result = calc(exp, actions, regexActions, converter);
+            System.out.println("Результат:" + result);
+        } catch (Exception e) {
+            System.out.println("Ошибка:" + e.getMessage());
+        }
+    }
+
+    public static String calc(String exp, String[] actions, String[] regexActions, Converter converter) throws ScannerException {
         int actionIndex = -1;
         int actionCount = 0;
+
         for (int i = 0; i < actions.length; i++) {
             int count = exp.length() - exp.replace(actions[i], "").length();
             if (count == 1) {
@@ -20,56 +30,56 @@ public class Calculator {
 
         if (actionIndex == -1 || actionCount != 1) {
             System.out.println("Некорректное выражение");
-            return;
         }
 
         String[] data = exp.split(regexActions[actionIndex]);
 
         if (data.length != 2) {
             System.out.println("Некорректное выражение");
-            return;
         }
-        if(converter.isRoman(data[0]) == converter.isRoman(data[1])){
-            int a,b;
-            boolean isRoman = converter.isRoman(data[0]);
-            if(isRoman){
 
+        if (converter.isRoman(data[0]) == converter.isRoman(data[1])) {
+            int a, b;
+            boolean isRoman = converter.isRoman(data[0]);
+            if (isRoman) {
                 a = converter.romanToInt(data[0]);
                 b = converter.romanToInt(data[1]);
-
-            }else{
+            } else {
                 a = Integer.parseInt(data[0]);
                 b = Integer.parseInt(data[1]);
             }
-            if(Math.abs(a)>10||Math.abs(b)>10){
-                System.out.println();
-                return;
+
+            if (Math.abs(a) > 10 || Math.abs(b) > 10) {
+                throw new ScannerException("input is restricted 1 to 10 ");
             }
+
             int result;
-            switch (actions[actionIndex]){
+            switch (actions[actionIndex]) {
                 case "+":
-                    result = a+b;
+                    result = a + b;
                     break;
                 case "-":
-                    result = a-b;
+                    result = a - b;
                     break;
                 case "*":
-                    result = a*b;
+                    result = a * b;
+                    break;
+                case "/":
+                    result = a / b;
                     break;
                 default:
-                    result = a/b;
-                    break;
+                    throw new ScannerException("Некорректная операция");
             }
-            if(isRoman){
-                System.out.println(converter.toRoman(result));
+
+            if (isRoman) {
+                return converter.toRoman(result);
+            } else {
+                return String.valueOf(result);
             }
-            else{
-                System.out.println(result);
-            }
-        }else{
+        } else{
             System.out.println("Числа должны быть в одном формате");
+
         }
-
-
+        return exp;
     }
 }

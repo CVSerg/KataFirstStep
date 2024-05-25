@@ -12,7 +12,7 @@ public class Main {
             String result = calc(exp, actions, regexActions, converter);
             System.out.println("Результат:" + result);
         } catch (Exception e) {
-            System.out.println("Ошибка:" + e.getMessage());
+            System.out.println("A mistake is " + e.getMessage());
         }
     }
 
@@ -50,7 +50,7 @@ public class Main {
             }
 
             if (Math.abs(a) > 10 || Math.abs(b) > 10) {
-                throw new ScannerException("input is restricted 1 to 10 ");
+                throw new ScannerException("input is restricted 1 to 10.");
             }
 
             int result;
@@ -68,7 +68,7 @@ public class Main {
                     result = a / b;
                     break;
                 default:
-                    throw new ScannerException("Некорректная операция");
+                    throw new ScannerException("an incorrect operation");
             }
 
             if (isRoman) {
@@ -76,10 +76,8 @@ public class Main {
             } else {
                 return String.valueOf(result);
             }
-        } else{
-            System.out.println("Числа должны быть в одном формате");
-
+        } else {
+            throw new ScannerException("numbers must be typed in the same format.");
         }
-        return exp;
     }
 }
